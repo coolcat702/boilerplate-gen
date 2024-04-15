@@ -1,20 +1,17 @@
 use std::fs::File;
 use std::io::Write;
 
-fn get_input<T: std::str::FromStr>(message: &str) -> T {
+fn get_input(message: &str) -> String {
     print!("{}", message);
     let _ = std::io::Write::flush(&mut std::io::stdout());
     let mut input: String = String::new();
-    match std::io::stdin().read_line(&mut input) {
-        Ok(_) => input.trim().parse::<T>().unwrap_or(get_input::<T>(message)),
-        Err(_) => get_input::<T>(message),
-    }
+    std::io::stdin().read_line(&mut input).unwrap().trim()
 }
 
 fn main() {
     let language = std::env::args().nth(1).unwrap_or(String::new());
     if !["c", "python", "py", "cpp", "c++", "rust", "java", "rs", "cs", "c#"].contains(&language.as_str()) {
-        match get_input::<String>("language: ").to_lowercase().as_str() {
+        match get_input("language: ").to_lowercase().as_str() {
             "c" => c_bp(),
             "python" | "py" => python_bp(),
             "cpp" | "c++" => cpp_bp(),
